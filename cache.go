@@ -155,7 +155,9 @@ func (v *Validate) extractStructCache(current reflect.Value, sName string) *cStr
 
 		if len(tag) > 0 {
 			ctag, _ = v.parseFieldTagsRecursive(tag, fld.Name, "", false)
-			ctag.label = fld.Tag.Get("label")
+			if label := fld.Tag.Get("label"); label != "" {
+				v.addLableToCTag(ctag, label)
+			}
 		} else {
 			// even if field doesn't have validations need cTag for traversing to potential inner/nested
 			// elements of the field.
@@ -174,6 +176,13 @@ func (v *Validate) extractStructCache(current reflect.Value, sName string) *cStr
 	v.structCache.Set(typ, cs)
 
 	return cs
+}
+
+func (v *Validate) addLableToCTag(ctag *cTag, label string) {
+	ctag.label = label
+	if ctag.next != nil {
+		v.addLableToCTag(ctag.next, label)
+	}
 }
 
 func (v *Validate) parseFieldTagsRecursive(tag string, fieldName string, alias string, hasAlias bool) (firstCtag *cTag, current *cTag) {
