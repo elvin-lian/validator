@@ -99,6 +99,7 @@ type cTag struct {
 	hasAlias       bool
 	hasParam       bool // true if parameter used eg. eq= where the equal sign has been set
 	isBlockEnd     bool // indicates the current tag represents the last validation in the block
+	label          string
 }
 
 func (v *Validate) extractStructCache(current reflect.Value, sName string) *cStruct {
@@ -154,6 +155,7 @@ func (v *Validate) extractStructCache(current reflect.Value, sName string) *cStr
 
 		if len(tag) > 0 {
 			ctag, _ = v.parseFieldTagsRecursive(tag, fld.Name, "", false)
+			ctag.label = fld.Tag.Get("label")
 		} else {
 			// even if field doesn't have validations need cTag for traversing to potential inner/nested
 			// elements of the field.

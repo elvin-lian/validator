@@ -95,7 +95,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("len-string", fe.Field(), c)
+					t, err = ut.T("len-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -105,10 +105,10 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("len-items", fe.Field(), c)
+					t, err = ut.T("len-items", translateFieldName(fe), c)
 
 				default:
-					t, err = ut.T("len-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("len-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -186,7 +186,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("min-string", fe.Field(), c)
+					t, err = ut.T("min-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -196,10 +196,10 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("min-items", fe.Field(), c)
+					t, err = ut.T("min-items", translateFieldName(fe), c)
 
 				default:
-					t, err = ut.T("min-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("min-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -277,7 +277,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("max-string", fe.Field(), c)
+					t, err = ut.T("max-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -287,10 +287,10 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("max-items", fe.Field(), c)
+					t, err = ut.T("max-items", translateFieldName(fe), c)
 
 				default:
-					t, err = ut.T("max-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("max-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -308,7 +308,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					fmt.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -323,7 +323,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					fmt.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -410,7 +410,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lt-string", fe.Field(), c)
+					t, err = ut.T("lt-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -425,14 +425,14 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lt-items", fe.Field(), c)
+					t, err = ut.T("lt-items", translateFieldName(fe), c)
 
 				case reflect.Struct:
 					if fe.Type() != reflect.TypeOf(time.Time{}) {
-						err = fmt.Errorf("tag '%s'不能用于struct类型.", fe.Tag())
+						err = fmt.Errorf("tag '%s'不能用于struct类型", fe.Tag())
 					}
 
-					t, err = ut.T("lt-datetime", fe.Field())
+					t, err = ut.T("lt-datetime", translateFieldName(fe))
 
 				default:
 					err = fn()
@@ -440,7 +440,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lt-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("lt-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -529,7 +529,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lte-string", fe.Field(), c)
+					t, err = ut.T("lte-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -544,14 +544,14 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lte-items", fe.Field(), c)
+					t, err = ut.T("lte-items", translateFieldName(fe), c)
 
 				case reflect.Struct:
 					if fe.Type() != reflect.TypeOf(time.Time{}) {
-						err = fmt.Errorf("tag '%s'不能用于struct类型.", fe.Tag())
+						err = fmt.Errorf("tag '%s'不能用于struct类型", fe.Tag())
 					}
 
-					t, err = ut.T("lte-datetime", fe.Field())
+					t, err = ut.T("lte-datetime", translateFieldName(fe))
 
 				default:
 					err = fn()
@@ -559,7 +559,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("lte-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("lte-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -648,7 +648,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gt-string", fe.Field(), c)
+					t, err = ut.T("gt-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -663,14 +663,14 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gt-items", fe.Field(), c)
+					t, err = ut.T("gt-items", translateFieldName(fe), c)
 
 				case reflect.Struct:
 					if fe.Type() != reflect.TypeOf(time.Time{}) {
-						err = fmt.Errorf("tag '%s'不能用于struct类型.", fe.Tag())
+						err = fmt.Errorf("tag '%s'不能用于struct类型", fe.Tag())
 					}
 
-					t, err = ut.T("gt-datetime", fe.Field())
+					t, err = ut.T("gt-datetime", translateFieldName(fe))
 
 				default:
 					err = fn()
@@ -678,7 +678,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gt-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("gt-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -767,7 +767,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gte-string", fe.Field(), c)
+					t, err = ut.T("gte-string", translateFieldName(fe), c)
 
 				case reflect.Slice, reflect.Map, reflect.Array:
 					var c string
@@ -782,14 +782,14 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gte-items", fe.Field(), c)
+					t, err = ut.T("gte-items", translateFieldName(fe), c)
 
 				case reflect.Struct:
 					if fe.Type() != reflect.TypeOf(time.Time{}) {
-						err = fmt.Errorf("tag '%s'不能用于struct类型.", fe.Tag())
+						err = fmt.Errorf("tag '%s'不能用于struct类型", fe.Tag())
 					}
 
-					t, err = ut.T("gte-datetime", fe.Field())
+					t, err = ut.T("gte-datetime", translateFieldName(fe))
 
 				default:
 					err = fn()
@@ -797,7 +797,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 						goto END
 					}
 
-					t, err = ut.T("gte-number", fe.Field(), ut.FmtNumber(f64, digits))
+					t, err = ut.T("gte-number", translateFieldName(fe), ut.FmtNumber(f64, digits))
 				}
 
 			END:
@@ -815,7 +815,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -830,7 +830,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -845,7 +845,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -860,7 +860,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -875,7 +875,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -890,7 +890,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -905,7 +905,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -920,7 +920,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -935,7 +935,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -950,7 +950,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -965,7 +965,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -980,7 +980,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1065,7 +1065,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1080,7 +1080,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1095,7 +1095,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1110,7 +1110,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1125,7 +1125,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
 
-				t, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				t, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1299,7 +1299,7 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			translation: "{0}必须是[{1}]中的一个",
 			override:    false,
 			customTransFunc: func(ut ut.Translator, fe validator.FieldError) string {
-				s, err := ut.T(fe.Tag(), fe.Field(), fe.Param())
+				s, err := ut.T(fe.Tag(), translateFieldName(fe), fe.Param())
 				if err != nil {
 					log.Printf("警告: 翻译字段错误: %#v", fe)
 					return fe.(error).Error()
@@ -1350,12 +1350,20 @@ func registrationFunc(tag string, translation string, override bool) validator.R
 }
 
 func translateFunc(ut ut.Translator, fe validator.FieldError) string {
-
-	t, err := ut.T(fe.Tag(), fe.Field())
+	t, err := ut.T(fe.Tag(), translateFieldName(fe))
 	if err != nil {
 		log.Printf("警告: 翻译字段错误: %#v", fe)
 		return fe.(error).Error()
 	}
 
 	return t
+}
+
+func translateFieldName(fe validator.FieldError) string {
+	name := fe.Label()
+	if name == "" {
+		name = fe.Field()
+	}
+
+	return name
 }

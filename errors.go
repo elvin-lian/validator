@@ -149,6 +149,10 @@ type FieldError interface {
 	// // eg. time.Time's type is time.Time
 	Type() reflect.Type
 
+	// Label returns Field's reflect tag of `label`
+	// eg. `label: "Label value"`
+	Label() string
+
 	// returns the FieldError's translated error
 	// from the provided 'ut.Translator' and registered 'TranslationFunc'
 	//
@@ -176,6 +180,7 @@ type fieldError struct {
 	param          string
 	kind           reflect.Kind
 	typ            reflect.Type
+	label          string
 }
 
 // Tag returns the validation tag that failed.
@@ -249,6 +254,10 @@ func (fe *fieldError) Type() reflect.Type {
 // Error returns the fieldError's error message
 func (fe *fieldError) Error() string {
 	return fmt.Sprintf(fieldErrMsg, fe.ns, fe.Field(), fe.tag)
+}
+
+func (fe *fieldError) Label() string {
+	return fe.label
 }
 
 // Translate returns the FieldError's translated error
